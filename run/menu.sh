@@ -41,9 +41,19 @@
 				change_option_focus menu "${optionsel[opsel]}"
 				read -r -N 1 op
 				case "$op" in
-					[qQ]) break;;
+					[qQ]) opsel=2; break;;
 					[wW]) ((opsel=opsel-1<0?opcnt-1:opsel-1)) ;;
 					[sS]) ((opsel=opsel+1>=opcnt?0:opsel+1)) ;;
+					$'\e')
+						read -r -N 1 -t 0.1 op
+						case "$op" in
+							'[')
+								read -r -N 1 -t 0.1 op
+								case "$op" in
+									A) ((opsel=opsel-1<0?opcnt-1:opsel-1)) ;;
+									B) ((opsel=opsel+1>=opcnt?0:opsel+1)) ;;
+								esac ;;
+						esac ;;
 					$'\n') break;;
 				esac
 			done

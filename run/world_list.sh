@@ -21,6 +21,55 @@
 		}
 		read -N 1
 	}
+	# worldlistButtonMode <opsel>
+	function worldlistButtonMode {
+		local opsel="$1"
+		change_option_focus worlds "${sops[sopc]}"
+		set_option_highlight worlds "$opsel" 1
+		while :;do
+			change_option_focus worlds "${sops[sopc]}"
+			read -r -N 1 op
+			case "$op" in
+				[aA]) ((sopc=sopc-1<0?sopcnt-1:sopc-1)) ;;
+				[dD]) ((sopc=sopc+1>=sopcnt?0:sopc+1)) ;;
+				[qQ])
+					doquit=1
+					break;;
+				$'\t')
+					((sopc=sopc+1>=sopcnt?0:sopc+1))
+					[ "$sopc" == 0 ] && break ;;
+				$'\e')
+					read -r -N 1 -t 0.1 op
+					case "$op" in
+						'[')
+							read -r -N 1 -t 0.1 op
+							case "$op" in
+								D) ((sopc=sopc-1<0?sopcnt-1:sopc-1)) ;;
+								C) ((sopc=sopc+1>=sopcnt?0:sopc+1)) ;;
+								Z)
+									((sopc=sopc-1<0?sopcnt-1:sopc-1))
+									((sopc==sopcnt-1)) && break ;;
+							esac ;;
+					esac ;;
+				$'\n')
+					case "${sops[sopc]}" in
+						join)
+							doquit=2 editorpage=load_world
+							ArgResult['world name']="${optionsel[opsel]}"
+							break;;
+						create)
+							echo -n 'awa';;
+						delete)
+							delete_world_with_prompt "${optionsel[opsel]}"
+							doquit=2 editorpage=world_list
+							break;;
+						back)
+							doquit=1
+							break;;
+					esac;;
+			esac
+		done
+	}
 	function worldlistmain {
 		echo $'\e'"[3;6H"'Minecraft IDE -- Worlds'
 		init_option_list worlds
@@ -37,7 +86,7 @@
 		show_all_options worlds
 		opcnt=${#optionsel[@]}
 		local op= opsel=0
-		local sops=( join create delete back ) sopc=0 doquit=0
+		local sops=( join create delete back ) sopc=0 sopcnt=4 doquit=0
 		while :;do
 			[ "$doquit" -gt 0 ] && {
 				[ "$doquit" == 1 ] && editorpage=menu
@@ -49,37 +98,18 @@
 				[qQ]) doquit=1;;
 				[wW]) ((opsel=opsel-1<0?opcnt-1:opsel-1)) ;;
 				[sS]) ((opsel=opsel+1>=opcnt?0:opsel+1)) ;;
-				$'\t')
-					change_option_focus worlds "${sops[sopc]}"
-					set_option_highlight worlds "$opsel" 1
-					while :;do
-						change_option_focus worlds "${sops[sopc]}"
-						read -r -N 1 op
-						case "$op" in
-							[aA]) ((sopc=sopc-1<0?3:sopc-1)) ;;
-							[dD]) ((sopc=sopc+1>=4?0:sopc+1)) ;;
-							[qQ])
-								doquit=1
-								break;;
-							$'\t') break;;
-							$'\n')
-								case "${sops[sopc]}" in
-									join)
-										doquit=2 editorpage=load_world
-										ArgResult['world name']="${optionsel[opsel]}"
-										break;;
-									create)
-										echo -n 'awa';;
-									delete)
-										delete_world_with_prompt "${optionsel[opsel]}"
-										doquit=2 editorpage=world_list
-										break;;
-									back)
-										doquit=1
-										break;;
-								esac;;
-						esac
-					done ;;
+				$'\t') worldlistButtonMode $opsel ;;
+				$'\e')
+					read -r -N 1 -t 0.1 op
+					case "$op" in
+						'[')
+							read -r -N 1 -t 0.1 op
+							case "$op" in
+								A) ((opsel=opsel-1<0?opcnt-1:opsel-1)) ;;
+								B) ((opsel=opsel+1>=opcnt?0:opsel+1)) ;;
+								Z) worldlistButtonMode $opsel;;
+							esac ;;
+					esac ;;
 				$'\n') 
 					editorpage=load_world
 					ArgResult['world name']="${optionsel[opsel]}"

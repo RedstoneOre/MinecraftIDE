@@ -20,7 +20,7 @@
 	}
 	# place <x> <y> <Char>
 	function place {
-		[ `getChar "$1" "$2"` == ' ' ] && setChar "$1" "$2" "$3"
+		[ "`getChar "$1" "$2"`" == ' ' ] && setChar "$1" "$2" "$3"
 	}
 	function movefocus {
 		tpx="$1" tpy="$2"
@@ -37,7 +37,7 @@
 		return 1
 	}
 	function UseBlock {
-		ublockt=`getChar "$1" "$2"`
+		ublockt="`getChar "$1" "$2"`"
 		case "$ublockt" in
 			'#') UsePiston "$1" "$2" ;; #Piston
 		esac
