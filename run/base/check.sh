@@ -1,5 +1,3 @@
-
-#! /bin/bash
 [ -v MCEDITOR_INC_base_check ] || {
 	[ "$MCEDITOR_dbgl" -ge 2 ] && echo 'Base.Checking loaded'
 	MCEDITOR_INC_base_check=

@@ -3,6 +3,9 @@
 		mcide [options...] FILES...
 	获取帮助:
 		mcide <-h|--help> [<--lang|--language|-l> lang:LANG]
+	恢复终端:
+		# 如果游戏崩溃了,它可能会影响你的终端,此时运行:
+		mcide <--rt|--recover-terminal>
 \e[1m选项:\e[0m
 	\e[31m红色\e[0;4m的选项暂时\e[1m无法使用\e[0m
 	\e[33m黄色\e[0;4m的选项暂时\e[1m没有效果\e[0m

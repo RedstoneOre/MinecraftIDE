@@ -27,6 +27,8 @@
 	CharPrc['ERB']='>'
 	CharStyle['VSP']='4'
 	CharPrc['VSP']='␣'
+	CharStyle['SPE']='0'
+	CharPrc['SPE']=' '
 	CharStyle['NDC']='9'
 	CharPrc['NDC']=''
 	CharStyle['default']='9'
@@ -42,7 +44,7 @@
 		[ "$charstyle.$charbg" == '9.7' ] && charstyle=0
 		PrintCharStyle="$charstyle.$charbg"
 		stylestr='' stylereset=0
-		[ "${3//*./}" != "$charbg" ] && {	
+		[ "${3//*./}" != "$charbg" ] && {
 			[ "$charbg" == '-' ] && {
 				stylestr="$stylestr"'0;'
 				stylerreset=1
@@ -76,7 +78,7 @@
 	UpdScreen=(1)
 	# GetScreenLeftUpperCorner <px> <py>
 	#  Get the posion of left upper corner on the map
-	#  Set ScrLeft as the x and ScrUpper as the y 
+	#  Set ScrLeft as the x and ScrUpper as the y
 	function GetScreenLeftUpperCorner {
 		((ScrLeft=px-vx))
 		((ScrUpper=py-vy))

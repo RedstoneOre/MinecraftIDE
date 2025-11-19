@@ -149,7 +149,7 @@
 				}
 				_invdispcache[i]="$sinvtgitem"
 			}
-			local len=${_invdispcache[i]##*;}
+			local len="${_invdispcache[i]##*;}"
 			local inwarpp=$((idxf%warp))
 			[ "$len" -gt "${width[inwarpp]}" ] && {
 				width[inwarpp]=$len

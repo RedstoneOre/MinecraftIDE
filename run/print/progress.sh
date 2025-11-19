@@ -57,7 +57,7 @@
 					break;;
 			esac
 		done
-		echo $'\n\n\n' >&11
+		echo >&11
 		#echo -n $'\e[G\e[K'
 	}
 	function WaitProgressBarEnd {

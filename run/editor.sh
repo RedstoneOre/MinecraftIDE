@@ -64,6 +64,9 @@
 			help)
 				lang="${ArgResult[lang]}"
 				echo -e "`< "$dirassets"/mcide/help/"$lang".txt`" ;;
+			recoverTerminal)
+				stty echo -icanon
+				echo -n $'\e[?25h' ;;
 		esac
 	}
 }

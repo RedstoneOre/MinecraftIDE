@@ -126,6 +126,5 @@
 		echo p50 >&6
 		echo tCompleted >&6
 		echo 'e\n' >&6
-		WaitProgressBarEnd
 	}
 }

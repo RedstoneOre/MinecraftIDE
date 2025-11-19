@@ -54,6 +54,8 @@
 										ArgResult[no simple mode prompt]=awa;;
 									--help)
 										ArgResult['task']=help;;
+									--rt|--recover-terminal)
+										ArgResult['task']=recoverTerminal;;
 									--language|--lang)
 										stat=lang statp=;;
 									--show-log-on-exit)

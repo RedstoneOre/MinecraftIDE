@@ -3,6 +3,9 @@
 		mcide [options...] FILES...
 	Get help:
 		mcide <-h|--help> [<--lang|--language|-l> lang:LANG]
+	Recover Terminal:
+		# If the game crashed, it may affect your terminal, then run this:
+		mcide <--rt|--recover-terminal>
 \e[1mOptions:\e[0m
 	\e[4mOptions with \e[31mred\e[0;4m color IS NOT AVAILBLE now\e[0m
 	\e[4mOptions with \e[33myellow\e[0;4m color HAVE NO EFFECT now\e[0m

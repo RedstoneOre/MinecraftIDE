@@ -8,6 +8,7 @@
 	. "$dirp"/block/proportions.sh
 	. "$dirp"/print.sh
 	. "$dirp"/print/progress.sh
+	. "$dirp"/print/print_thread.sh
 	. "$dirp"/block.sh
 	. "$dirp"/entity.sh
 	. "$dirp"/container.sh
@@ -110,6 +111,7 @@
 				read
 			}
 			InvInit inv 46
+			InvInit craft2 5
 			px=0 py=0
 			true
 		} || {
@@ -174,6 +176,11 @@
 		}
 		CreateEntity $ENTITY_ITEM `GetItemEntityData 'The Illegal Item' ` -20 -20 0
 
+		local printthreads=4 i=
+		for((i=0;i<printthreads;++i));do
+			PrintThread &
+		done
+
 		local power=100 prignore=0 isdig=0 canceldrop=0 opsuc=0 invopen=0 linvopen=0 linvselected=
 		unset invselected; invselected=
 		tickc=0
@@ -188,6 +195,10 @@
 						invselected=$selhotbar
 						linvselected=$invselected
 					}
+					ShowInventory craft2 2 0 4
+					echo -n $'\e[1;18HCrafting\e[2;18H------->  '
+					ShowInventory craft2 1 4 5
+					echo
 					RemoveCache inv $selhotbar
 					ShowInventory inv 9 0 45 $invselected $linvselected
 					echo -n $'\nCursor: '
@@ -209,36 +220,61 @@
 					PrintCharStyle="$defaultstyle"
 					GetScreenLeftUpperCorner "$px" "$py"
 					sScrLeft="$ScrLeft" sScrUpper="$ScrUpper"
-					local i= j=
+					local i= j= tasked=()
+					echo -n 'C' >&18
 					for((i=sScrUpper;i<=py+vy;++i));do
 						[ "$UpdScreen" != 1 ] && [ "${UpdScreen[i-(sScrUpper)+1]}" != 1 ] && {
-							echo
 							continue
 						}
-						for((j=sScrLeft;j<=px+vx;++j));do
-							prc=`getChar "$j" "$i"`
-							[ "$i" == "$focy" ] && [ "$j" == "$focx" ] && prc=DIG
-							[ "$i" == "$py" ] && [ "$j" == "$px" ] && prc=PLY
-							[ "${entopos["$dim.$j.$i.c"]:-0}" -gt 0 ] && {
-								hasentity='E'
-								true
-							} || hasentity='e'
-							SetScreenShow "$[i-py]" "$[j-px]" "$hasentity$prc" && {
-								PrintIgnore "$prignore"
-								prignore=0
-								PrintChar "$prc" "$hasentity" "$PrintCharStyle"
-								true
-							} || {
-								prignore="$[prignore+1]"
-							}
-						done
-						PrintIgnore "$prignore"
-						prignore=0
-						PrintChar NDC '' "$PrintCharStyle"
-						echo $'\e[K'
+						local tl=()
+						local taskln=$((i-sScrUpper))
+						read -rd 'C' <&18
+						{
+							echo -n "T$taskln"
+							for((j=sScrLeft;j<=px+vx;++j));do
+								prc=`getChar "$j" "$i"`
+								[ "$i" == "$focy" ] && [ "$j" == "$focx" ] && prc=DIG
+								[ "$i" == "$py" ] && [ "$j" == "$px" ] && prc=PLY
+								[ "$prc" == ' ' ] && prc=SPE
+								[ "${entopos["$dim.$j.$i.c"]:-0}" -gt 0 ] && {
+									hasentity='E'
+									true
+								} || hasentity='e'
+								echo -n " $hasentity;$prc"
+							done
+							echo
+						} >&15
+						# echo "Render command sent: T$taskln ${tl[@]}" >&2
+						echo -n ' ' >&17
+						tasked[taskln]=1
 					done
-					true
+					read -rd 'C' <&18
+					local tres=() tresln=
+					while ((${#tasked[@]} > 0));do
+						read -r -d $'\n' -t 5 tresln <&16 || {
+							echo 'Rendering Timed Out for line(s) '"${!tasked[@]}"
+							break
+						}
+						# echo "Received rendered data: $tresln" >&2
+						{
+							local tresop= treslc= tresstr=
+							read -N 1 tresop
+							[ "$tresop" == R ] && {
+								read -rd ' ' treslc
+								read -rd $'\n' tresstr
+							}
+						} < <(echo "$tresln")
+						# echo "Received rendered $treslc: $tresstr" >&2
+						tres[treslc]="$tresstr"
+						unset tasked[treslc]
+						for i in "${!tres[@]}"; do
+							echo -n $'\e['$((i+1))'H'"${tres[i]}"$'\e[0m'
+						done
+					done
+					echo -n $'\e['"$((vy*2+2))"'H'
+
 					UpdScreen=()
+					true
 				}
 				echo -n "Pos: ($px, $py), Focus: ($focx, $focy), Dim: `GetDimensionName "$dim"`, Tick $tickc"$'\e[K\n'
 				[ "$dip" -gt 0 ] && {
@@ -324,6 +360,10 @@
 				}
 			done
 			echo 'disconnect' >&12
+			for((i=0;i<printthreads;++i)); do
+				echo 'Q'
+				echo -n ' ' >&3
+			done >&15 3>&17
 		} 4< <(InputThread)
 		echo -n $'\ec'
 		local i=
@@ -337,12 +377,17 @@
 			{
 				echo t'Backing up original file' >&6
 				echo p0 >&6
-				cp -- "$efile" "$efile".meditor.backup
+				cp -- "$efile" "$efile".meditor.backup &&
 				Save_File `GetDimensionID "$i"` "$efile" > >( {
 					fhashdata="`tee "$efile" | sha1sum`"
 					echo -n "awa#$fhashdata#"
 				} >&14 ) &&
-				rm -- "$efile".meditor.backup
+				rm -- "$efile".meditor.backup || {
+					echo 'tFAILED TO SAVE' >&6
+					echo 'e' >&6
+					echo -n "awa#FailedToSave.qwq -#" >&14
+				}
+				WaitProgressBarEnd
 				local hashdata=
 				read -rd '#' -u 14
 				read -rd '#' -u 14 hashdata
