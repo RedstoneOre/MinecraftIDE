@@ -3,6 +3,7 @@
 	[ "$MCEDITOR_dbgl" -ge 2 ] && echo 'options loaded'
 	MCEDITOR_INC_options=
 	. "$dirp"/base/check.sh
+	. "$dirp"/input/read.sh
 
 	# TextProvider Presets
 	function TextProvider_fixed {
@@ -15,6 +16,9 @@
 	}
 	function TextProvider_choice {
 		echo -n "$1$2"
+	}
+	function TextProvider_input {
+		echo -n $'\e[1m'"$1"$'\e[0m'"$2"
 	}
 
 	# init_option_list <name>
@@ -30,7 +34,15 @@
 		declare -g -A "${d}_data=()"
 		declare -g -A "$d=()"
 	}
-	# add_option <listname> <id> [textprovider:fixed] <text> [pos:(currect, req see /print/window.sh:16 )] [type:button]
+
+	# free_option_list <name>
+	# Free an option list
+	function free_option_list {
+		local d=$1
+		unset "${d}_text" "${d}_textp" "${d}_pos" "${d}_type" "${d}_stat" "${d}_data" "$d"
+	}
+
+	# add_option <listname> <id> [textprovider:fixed] <text> [pos:(current, req see /print/window.sh:16 )] [type:button]
 	function add_option {
 		local d=$1 id=$2 textp=${3:-fixed} text=$4 pos=$5 type=${6:-button}
 		[ "$pos" ] || {
@@ -118,5 +130,16 @@
 			}
 		}
 		return 1
+	}
+	# edit_input_option <listname> <id> <autocomplete_provider>
+	function edit_input_option {
+		local d=$1 id=$2 provider="$3"
+		declare -n "_o_pos=${d}_pos"
+		declare -n "_o_data=${d}_data"
+		declare -n "_o_text=${d}_text"
+		echo -n $'\e['"${_o_pos["$id"]}H"$'\e[1;33m'"${_o_text["$id"]}"$'\e[0m'
+		Read_Read "$provider" "${_o_data["$id"]}"
+		_o_data["$id"]="$Read_Result"
+		update_option "$d" "$id"
 	}
 }

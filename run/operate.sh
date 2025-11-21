@@ -8,7 +8,7 @@
 	. "$dirp"/container.sh
 	. "$dirp"/command.sh
 	function Operate_MoveUpwards {
-		[ `getChar "$px" "$[py-1]"` != BOL ] && {
+		[ "`getChar "$px" "$[py-1]"`" != BOL ] && {
 			move 0 -1; ismove=1
 			UpdScreen[0]=1
 			opsuc=1
@@ -29,7 +29,8 @@
 	}
 	function Operate_Jump {
 		[ "$power" -ge 20 ] && {
-			[ `getChar "$px" "$[py-1]"` != BOL ] && move 0 -1
+			# [ "`getChar "$px" "$[py-1]"`" != BOL ] && 
+			move 0 -1
 			canceldrop="$[canceldrop+1]"
 			power="$[power-20]"
 			opsuc=1 ismove=1
@@ -94,7 +95,7 @@
 		local cmd=
 		echo -n 'Command: '
 		stty echo
-		read -re cmd
+		read -r cmd
 		stty -echo
 		RunCommand "$cmd"
 	}

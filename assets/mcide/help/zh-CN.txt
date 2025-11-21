@@ -9,28 +9,29 @@
 \e[1m选项:\e[0m
 	\e[31m红色\e[0;4m的选项暂时\e[1m无法使用\e[0m
 	\e[33m黄色\e[0;4m的选项暂时\e[1m没有效果\e[0m
-		--dir dir:PATH		将$dir作为游戏文件夹
-		--menu, -m		显示游戏菜单(任务=menu)
-		\e[31m--create-world		创建一个新的世界(任务=create_world)\e[0m
-		--load-world file:PATH,	加载世界\e[0m
-		\e[37m|\e[0m --open-world file:PATH,
-		\e[37m|\e[0m -w file:PATH
-		\e[33m--language lang:LANG	设置语言
+		--dir dir:PATH			将$dir作为游戏文件夹
+		--menu, -m			显示游戏菜单(页面=menu)
+		\e[31m--create-world			创建一个新的世界(页面=create_world)\e[0m
+		--load-world file:WORLDNAME,	加载世界(页面=load_world)\e[0m
+		\e[37m|\e[0m --open-world file:WORLDNAME,
+		\e[37m|\e[0m -w file:WORLDNAME
+		\e[33m--language lang:LANG		设置语言
 		\e[37m|\e[0m \e[33m--lang lang:LANG, -l lang:LANG\e[0m
 		--vision-size x:NUMBER y:NUMBER 设置可视范围大小(渲染距离)
 		--vision-size-x x:NUMBER	设置可视范围宽度
 		\e[37m|\e[0m -x x:NUMBER
 		--vision-size-y y:NUMBER	设置可视范围高度
 		\e[37m|\e[0m -y y:NUMBER
-	* 如果任意维度在参数中被定义, 默认的任务将被设为`create_world`, 否则它
+	* 如果任意维度在参数中被定义, 默认的页面将被设为`create_world`, 否则它
 	*  将被设为`menu`.
-	\e[1m对于`menu`任务: \e[0m
-	\e[1m对于`create_world`任务: \e[0m
+	\e[1m对于`menu`页面: \e[0m
+	\e[1m对于`create_world`页面: \e[0m
 		--dim dimid:DID file:PATH	从一个文件中读取维度, \e[31m设$dimid为'-'可以自动设置\e[0m
 		\e[37m|\e[0m --dimension dimid:DID file:PATH,
 		\e[37m|\e[0m -d dimid:DID file:PATH
 		--overworld file:PATH		从一个文件中读取主世界(维度 `mcide:overworld`)
 		\e[37m|\e[0m -o file:PATH
-	\e[1m对于`load_world`任务: \e[0m
+	\e[1m对于`load_world`页面: \e[0m
+		-n world:WORLDNAME		打开的世界,我不知道为什么我添加了这个,毕竟他已经在-w <world>里了
 \e[1m示例:\e[0m
 	\e[2mComming Soon awa\e[0m

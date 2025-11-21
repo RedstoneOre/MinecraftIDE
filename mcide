@@ -24,7 +24,8 @@ unset	MCEDITOR_INC_editor		MCEDITOR_INC_world		MCEDTIOR_INC_option_list \
 	MCEDITOR_INC_heap		MCEDITOR_INC_print_progress	MCEDITOR_INC_container \
 	MCEDITOR_INC_argument		MCEDITOR_INC_dimension		MCEDITOR_INC_fifo \
 	MCEDITOR_INC_print_window	NCEDITOR_INC_save		MCEDITOR_INC_world_list \
-	MCEDITOR_INC_base_check		MCEDITOR_INC_base_str
+	MCEDITOR_INC_base_check		MCEDITOR_INC_base_str		MCEDITOR_INC_create_world \
+	MCEDITOR_INC_input_save
 ldir="`dirname "$0"`"
 [ "$ldir" ] || {
 	echo 'What happened I even cannot find the executable file awa'

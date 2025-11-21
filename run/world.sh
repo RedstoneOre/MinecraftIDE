@@ -64,7 +64,7 @@
 			}
 		}
 		[ "$createmode" == create ] && [ -e "$worlddir" ] && {
-			echo $'\e[31mWARN: You are trying to override a exist world.\e[0m'
+			echo $'\e[31mWARN: You are trying to override an existed world.\e[0m'
 			echo $'\e[31mTo open the world, use `-w|--open-world|--load-world <name>`\e[0m'
 			echo $'\e[31mTo override the world, delete the original one manually.\e[0m'
 			read -N 1
@@ -268,7 +268,7 @@
 						tres[treslc]="$tresstr"
 						unset tasked[treslc]
 						for i in "${!tres[@]}"; do
-							echo -n $'\e['$((i+1))'H'"${tres[i]}"$'\e[0m'
+							echo -n $'\e['$((i+1))'H'"${tres[i]}"$'\e[0m\e[K'
 						done
 					done
 					echo -n $'\e['"$((vy*2+2))"'H'

@@ -1,4 +1,3 @@
-
 #! /bin/bash
 [ -v MCEDITOR_INC_fifo ] || {
 	[ "$MCEDITOR_dbgl" -ge 2 ] && echo 'Fifos loaded'

@@ -6,6 +6,7 @@
 	. "$dirp"/world.sh
 	. "$dirp"/menu.sh
 	. "$dirp"/world_list.sh
+	. "$dirp"/create_world.sh
 	. "$dirp"/option_list.sh
 	function editorrecover {
 		echo -n $'\e[0m'
@@ -48,6 +49,8 @@
 						create_world)
 							local worldname="${ArgResult['world name']}"
 							worldmain "$worldname" create ;;
+						create_world.ui)
+							CreateWorldScreen ;;
 						load_world)
 							local worldname="${ArgResult['world name']}"
 							worldmain "$worldname" ;;

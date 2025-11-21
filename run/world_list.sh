@@ -58,7 +58,8 @@
 							ArgResult['world name']="${optionsel[opsel]}"
 							break;;
 						create)
-							echo -n 'awa';;
+							editorpage=create_world.ui doquit=2
+							break;;
 						delete)
 							delete_world_with_prompt "${optionsel[opsel]}"
 							doquit=2 editorpage=world_list

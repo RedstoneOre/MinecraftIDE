@@ -88,7 +88,7 @@ a extended piston, interact with the `#` to contract
 - [ ] Optimize
 - - [ ] Multi-threading
 - - - [x] Input thread
-- - - [ ] Async Print
+- - - [x] Async Print
 - - - [ ] Entity thread
 - - [x] Display Cache
 - - [x] Free Headers Including

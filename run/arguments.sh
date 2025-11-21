@@ -24,6 +24,7 @@
 		ArgResult['task']=main
 		ArgResult['page']=
 		ArgResult['lang']='en-US'
+		local ERR_UNSAFE='Unsafe option with --- prefix, if you want to use it, add --unsafe-args, use at your own risk.'
 		local i=
 		for i; do
 			local stop=0
@@ -66,6 +67,34 @@
 										stat=set_vision_size statp=x;;
 									--vision-size-y)
 										stat=set_vision_size statp=y;;
+									--unsafe-args)
+										ArgResult['unsafe args']=allowed;;
+									--safe-args)
+										unset ArgResult['unsafe args'];;
+									---page)
+										[ "${ArgResult['unsafe args']}" ] && {
+											stat=set_page
+											true
+										} || {
+											ArgResult['err']="$ERR_UNSAFE"
+											return 1
+										};;
+									---argresult)
+										[ "${ArgResult['unsafe args']}" ] && {
+											stat=set_argresult statp=
+											true
+										} || {
+											ArgResult['err']="$ERR_UNSAFE"
+											return 1
+										};;
+									---define-dim)
+										[ "${ArgResult['unsafe args']}" ] && {
+											stat=define_dim statp=
+											true
+										} || {
+											ArgResult['err']="$ERR_UNSAFE"
+											return 1
+										};;
 									*)
 										ArgResult['err']='Illegal option: '"$i"
 										return 1 ;;
@@ -144,6 +173,18 @@
 						ArgResult['world name']="$i"
 						stat=generic statp=
 						;;
+					set_page)
+						ArgResult['page']="$i"
+						stat=generic statp= ;;
+					set_argresult)
+						ArgResult['page']="$i"
+						[ "$statp" ] && {
+							ArgResult["$statp"]="$i"
+							stat=generic statp=
+							true
+						} || {
+							statp="$i"
+						};;
 					set_vision_size)
 						IsNumber "$i" && {
 							case "$statp" in
@@ -160,6 +201,9 @@
 							return 1
 						}
 						;;
+					define_dim)
+						dims[${#dims[@]}]="$i"
+						stat=generic statp=;;
 					lang)
 						ArgResult['lang']="$i"
 						stat=generic statp= ;;

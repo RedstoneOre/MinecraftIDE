@@ -9,13 +9,13 @@
 \e[1mOptions:\e[0m
 	\e[4mOptions with \e[31mred\e[0;4m color IS NOT AVAILBLE now\e[0m
 	\e[4mOptions with \e[33myellow\e[0;4m color HAVE NO EFFECT now\e[0m
-		--dir dir:PATH		use $dir as the game dir
-		--menu, -m		show game menu(page=menu)
-		\e[31m--create-world		create a new world(page=create_world)\e[0m
-		--load-world file:PATH,	load a world
-		\e[37m|\e[0m --open-world file:PATH,
-		\e[37m|\e[0m -w file:PATH
-		\e[33m--language lang:LANG	set the language
+		--dir dir:PATH			use $dir as the game dir
+		--menu, -m			show game menu(page=menu)
+		\e[31m--create-world			create a new world(page=create_world)\e[0m
+		--load-world file:WORLDNAME,	load a world(page=load_world)
+		\e[37m|\e[0m --open-world file:WORLDNAME,
+		\e[37m|\e[0m -w file:WORLDNAME
+		\e[33m--language lang:LANG		set the language
 		\e[37m|\e[0m \e[33m--lang lang:LANG, -l lang:LANG\e[0m
 		--vision-size x:NUMBER y:NUMBER	Set the vision size(render distance)
 		--vision-size-x x:NUMBER	Set the vision width
@@ -32,6 +32,7 @@
 		\e[37m|\e[0m -d dimid:DID file:PATH
 		--overworld file:PATH		read overworld(dim `mcide:overworld`) from a file
 		\e[37m|\e[0m -o file:PATH
-	\e[1m For `load world`: \e[0m
+	\e[1m For `load_world` page: \e[0m
+		-n world:WORLDNAME		The world to open, idk why I added this since it's already in -w <world>
 \e[1mSamples:\e[0m
 	\e[2mComming Soon awa\e[0m

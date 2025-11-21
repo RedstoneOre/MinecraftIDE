@@ -159,7 +159,7 @@
 		done
 		local i= j=
 		for((i=from;i<to;++i));do
-			[ "$(((i-from)%warp))" == 0 ] && ((i!=from)) && echo
+			[ "$(((i-from)%warp))" == 0 ] && ((i!=from)) && echo $'\e[K'
 			local inwarpp=$(((i-from)%warp)) idxf=$((i-from))
 			echo -n "${msgs[idxf]}"$'\e[0m'
 			for((j=width[inwarpp];j>=lens[idxf];--j));do echo -n ' ';done

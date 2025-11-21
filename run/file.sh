@@ -28,6 +28,7 @@
 					progupdcd=10;
 				}
 				((++rchars))
+				IFS=
 				read -r -n 1 -d $'\0' tfc || {
 					readfileend=1
 					break
@@ -124,7 +125,7 @@
 		done
 		dim=$ldim
 		echo p50 >&6
-		echo tCompleted >&6
+		echo t'Completed' >&6
 		echo 'e\n' >&6
 	}
 }
