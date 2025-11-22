@@ -6,15 +6,19 @@
 	. "$dirp"/espmap.sh
 	. "$dirp"/print/progress.sh
 	. "$dirp"/heap.sh
-	# Read_File <Dimension> <FileSize> < (standard input)
+	# load_file <Dimension> <FileSize> < (standard input)
 	#  Read a file into a dimension
 	#  output progress to fd 6
-	function Read_File {
+	function load_file {
+		echo -n b >&2
 		local readfileend=0 filesize="${2:-114514}"
 		ldim=$dim
 		dim="${1:-0}"
+		echo -n c >&2
 		heap_init fcm$dim
+		echo -n d >&2
 		local i= j= progupdcd=5 rchars=0
+		echo -n e >&2
 		for((i=0;;++i));do
 			setChar 0 $i 'BOL'
 			for((j=1;;));do
@@ -56,8 +60,8 @@
 	# Save_File <Dimension> > (output)
 	#  Save a dimension to a file
 	#  output progress to fd 6
-	function Save_File {
-		local unkespmsg='(What is this fucking char?)'
+	function save_file {
+		local unkespmsg='(What is this f char?)'
 		ldim=$dim
 		dim="${1:-0}"
 		echo t'Preparing data 0%' >&6

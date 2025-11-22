@@ -99,7 +99,8 @@
 				NewDimension "$i" "$efile"
 				local did=`GetDimensionID "$i"`
 				local filesize=`wc -m "$efile" | { read -d ' ' -r l;echo -n $l ; }`
-				Read_File "$did" "$filesize" <"$efile" 6> >(ShowProgressBar "Reading $i from $efile[" ']' 50)
+				echo "Reading $i from $efile, size $filesize" >&2
+				load_file "$did" "$filesize" <"$efile" 6> >(ShowProgressBar "Reading $i from $efile[" ']' 50)
 				[ "$MCEDITOR_dbgl" -gt 1 ] && {
 					echo "Load dimension: $i(ID: $did) from $efile"
 					heap_print "fcm$did"
@@ -378,7 +379,7 @@
 				echo t'Backing up original file' >&6
 				echo p0 >&6
 				cp -- "$efile" "$efile".meditor.backup &&
-				Save_File `GetDimensionID "$i"` "$efile" > >( {
+				save_file `GetDimensionID "$i"` "$efile" > >( {
 					fhashdata="`tee "$efile" | sha1sum`"
 					echo -n "awa#$fhashdata#"
 				} >&14 ) &&
