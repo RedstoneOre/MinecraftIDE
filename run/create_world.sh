@@ -29,12 +29,16 @@
 
 				[cC]) change_option_focus $COPL create;focus=create;;
 				$'\n')	case "$focus" in
-						cancel) break;;
-						create) break;;
+						cancel)
+							editorpage=world_list
+							break;;
+						create)
+							ReadArguments -o "`get_input_value $COPL opt.overworld`" -n "`get_input_value $COPL name`"
+							editorpage=create_world
+							break;;
 					esac;;
 			esac
 		done
 		echo -n $'\ec'
-		editorpage=world_list
 	}
 }

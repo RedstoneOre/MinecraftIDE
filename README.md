@@ -16,7 +16,7 @@ git clone https://github.com/RedstoneOre/MinecraftIDE.git
 ## Usage
 ```sh
 cd MinecraftIDE
-./mcide <file>
+./mcide
 ```
 See [arguments](docs/arguments/en-US.txt) for argument usage details
 

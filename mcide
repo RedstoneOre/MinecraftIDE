@@ -26,32 +26,33 @@ unset	MCEDITOR_INC_editor		MCEDITOR_INC_world		MCEDTIOR_INC_option_list \
 	MCEDITOR_INC_print_window	NCEDITOR_INC_save		MCEDITOR_INC_world_list \
 	MCEDITOR_INC_base_check		MCEDITOR_INC_base_str		MCEDITOR_INC_create_world \
 	MCEDITOR_INC_input_save		MCEDITOR_INC_file
-ldir="`dirname "$0"`"
+ldir="`dirname -- "$0"`"
 [ "$ldir" ] || {
 	echo 'What happened I even cannot find the executable file awa'
 	sleep 3
-	exit 1
+	false
+} && {
+	export dirp="$ldir"/run
+	export dirlib="$ldir"/lib
+	export dirlog="$ldir"/log
+	export dirtmp="$ldir"/tmp
+	export dirassets="$ldir"/assets
+	export dirgame="$ldir"
+	mkdir -p "$dirlog" "$dirtmp"
+	MCEDITOR_dbgl=`echo -n "$dbgl" | jq -crM .mcide`
+	[[ "$MCEDITOR_dbgl" != [0-9] ]] && MCEDITOR_dbgl=0
+	{
+		logfile="$dirlog/`date '+%F/%T'`#$$.log"
+		rm "$dirlog"/latest.log
+		ln -s "$logfile" "$dirlog"/latest.log
+		mkdir -p "${logfile%/*}"
+		exec 2> "$logfile"
+	}
+	echo "Using tmp dictionary $dirtmp" >&2
+	[ "$MCEDITOR_dbgl" -ge 2 ] && {
+		echo "Current debug level: $MCEDITOR_dbgl"
+		sleep 0.3
+	}
+	. "$dirp"/editor.sh
+	editormain "$@"
 }
-export dirp="$ldir"/run
-export dirlib="$ldir"/lib
-export dirlog="$ldir"/log
-export dirtmp="$ldir"/tmp
-export dirassets="$ldir"/assets
-export dirgame="$ldir"
-mkdir -p "$dirlog" "$dirtmp"
-MCEDITOR_dbgl=`echo -n "$dbgl" | jq -crM .mcide`
-[[ "$MCEDITOR_dbgl" != [0-9] ]] && MCEDITOR_dbgl=0
-{
-	logfile="$dirlog/`date '+%F/%T'`#$$.log"
-	rm "$dirlog"/latest.log
-	ln -s "$logfile" "$dirlog"/latest.log
-	mkdir -p "${logfile%/*}"
-       	exec 2> "$logfile"
-}
-echo "Using tmp dictionary $dirtmp" >&2
-[ "$MCEDITOR_dbgl" -ge 2 ] && {
-	echo "Current debug level: $MCEDITOR_dbgl"
-	sleep 0.3
-}
-. "$dirp"/editor.sh
-editormain "$@"

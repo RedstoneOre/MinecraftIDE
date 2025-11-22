@@ -142,4 +142,10 @@
 		_o_data["$id"]="$Read_Result"
 		update_option "$d" "$id"
 	}
+	#get_input_value <listname> <id>
+	function get_input_value {
+		local d=$1 id=$2
+		declare -n "_o_data=${d}_data"
+		echo -n "${_o_data["$id"]}"
+	}
 }
