@@ -3,11 +3,12 @@
 	MCEDITOR_INC_editor=
 	# dirp as the .../run/ path required
 	. "$dirp"/arguments.sh
-	. "$dirp"/world.sh
-	. "$dirp"/menu.sh
-	. "$dirp"/world_list.sh
-	. "$dirp"/create_world.sh
-	. "$dirp"/option_list.sh
+	. "$dirp"/optional_features.sh
+	. "$dirp"/pages/world.sh
+	. "$dirp"/pages/menu.sh
+	. "$dirp"/pages/world_list.sh
+	. "$dirp"/pages/create_world.sh
+	. "$dirp"/pages/option_list.sh
 	function editorrecover {
 		echo -n $'\e[0m'
 		[ "$MCEDITOR_dbgl" -ge 1 ] && echo 'Main Thread Ended'
@@ -32,15 +33,22 @@
 				lang="${ArgResult[lang]}"
 
 				echo -n $'\e[0m\e[?25l'
+				create_feature_list mcide
+				[ "${ArgResult['sounds']}" != no ] && which mpv nc >/dev/null 2>&1 && enable_feature mcide bgm 1
 				[ "$MCEDITOR_dbgl" -gt 1 ] && {
 					set | grep -w '^ArgResult'
 				}
 				unset showlogonexit
 				[ -v ArgResult['show log on exit'] ]; showlogonexit=$[1-$?]
 				editorpage="${ArgResult[page]}"
+				local mpvIpcServer= mpvPid=
+				check_feature mcide bgm 1 && {
+					mpvIpcServer='@mpv-ipc-'$$
+					mpv --no-video --force-window=no --idle=no --input-terminal=no --quiet --input-ipc-server="$mpvIpcServer" "$dirassets"/mcide/sounds/bgm/1.mp3 --loop >&2 & mpvPid="$!"
+				}
 				[ "$MCEDITOR_dbgl" -ge 1 ] && echo "Start page: $editorpage"
 				while :;do
-					_editorpage="$editorpage"
+					local _editorpage="$editorpage"
 					editorpage=menu
 					end=0
 					case "$_editorpage" in
@@ -58,11 +66,21 @@
 							worldlistmain ;;
 						options)
 							option_list_main;;
+						minecraft)
+							xdg-open https://www.minecraft.net/marketplace/marketplace-pass;;
 						exit)
 							break;;
 					esac
 				done
 				editorrecover
+				check_feature mcide bgm 1 && {
+					echo '{"command":["quit"]}' | {
+						nc -U "$mpvIpcServer" >&2 || {
+							kill -0 "$mpvPid" &&
+							kill -s SIGINT "$mpvPid"
+						}
+					}
+				}
 				[ "$showlogonexit" == 1 ] && vim "$logfile" ;;
 			help)
 				lang="${ArgResult[lang]}"

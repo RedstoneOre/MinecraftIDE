@@ -1,6 +1,6 @@
 #! /bin/bash
-[ -v MCEDITOR_INC_world ] || {
-	MCEDITOR_INC_world=
+[ -v MCEDITOR_INC_pages_world ] || {
+	MCEDITOR_INC_pages_world=
 	# dirp as the .../run/ path required
 	. "$dirp"/arguments.sh
 	. "$dirp"/input.sh

@@ -1,7 +1,7 @@
 #! /bin/bash
-[ -v MCEDITOR_INC_world_list ] || {
+[ -v MCEDITOR_INC_pages_world_list ] || {
 	[ "$MCEDITOR_dbgl" -ge 2 ] && echo 'World list loaded'
-	MCEDITOR_INC_world_list=
+	MCEDITOR_INC_pages_world_list=
 	. "$dirp"/options.sh
 	function delete_world_with_prompt {
 		echo $'\ecAre you sure you want to delete this world?'

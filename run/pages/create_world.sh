@@ -1,7 +1,7 @@
 #! /bin/bash
-[ -v MCEDITOR_INC_create_world ] || {
+[ -v MCEDITOR_INC_pages_create_world ] || {
 	[ "$MCEDITOR_dbgl" -ge 2 ] && echo 'Creating world screen loaded'
-	MCEDITOR_INC_create_world=
+	MCEDITOR_INC_pages_create_world=
 	. "$dirp"/options.sh
 	function CreateWorldScreen {
 		local COPL=create_pos

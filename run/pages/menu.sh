@@ -1,9 +1,10 @@
 #! /bin/bash
-[ -v MCEDITOR_INC_menu ] || {
+[ -v MCEDITOR_INC_pages_menu ] || {
 	[ "$MCEDITOR_dbgl" -ge 2 ] && echo 'Menu loaded'
-	MCEDITOR_INC_menu=
+	MCEDITOR_INC_pages_menu=
 	. "$dirp"/print/window.sh
 	. "$dirp"/options.sh
+	. "$dirp"/optional_features.sh
 	function menumain {
 		getWindowSize
 		local iconsize=20
@@ -24,6 +25,9 @@
 		echo -n $'\ec\e'"[${stline}H$icon"
 		echo $'\e'"[$((stline+3));$((iconsize*2+6))H"'Minecraft IDE'
 		echo $'\e'"[$((stline+4));$((iconsize*2+10))H"$'-- A simple and \e[9mannoy\e[0;4minterest\e[0ming editor'
+		check_feature mcide bgm 1 || {
+			echo $'\e'"[$((stline-2));$((iconsize))H"$'\e[33mMusics is avalible now! install mpv to enable it!\e[0m'
+		}	
 		init_option_list menu
 		echo -n $'\e'"[$((stline+6));$((iconsize*2+6))H"
 		add_option menu worlds fixed 'Singleplayer' '' button
@@ -36,12 +40,12 @@
 		show_all_options menu
 		while :;do
 			local op= opsel=0
-			local optionsel=( worlds servers leave ) opcnt=3
+			local optionsel=( worlds servers options leave ) opcnt=4
 			while :;do
 				change_option_focus menu "${optionsel[opsel]}"
 				read -r -N 1 op
 				case "$op" in
-					[qQ]) opsel=2; break;;
+					[qQ]) opsel=3; break;;
 					[wW]) ((opsel=opsel-1<0?opcnt-1:opsel-1)) ;;
 					[sS]) ((opsel=opsel+1>=opcnt?0:opsel+1)) ;;
 					$'\e')

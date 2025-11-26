@@ -67,6 +67,8 @@
 										stat=set_vision_size statp=x;;
 									--vision-size-y)
 										stat=set_vision_size statp=y;;
+									--no-sounds)
+										ArgResult['sounds']=no;;
 									--unsafe-args)
 										ArgResult['unsafe args']=allowed;;
 									--safe-args)
