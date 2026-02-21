@@ -67,7 +67,10 @@
 						options)
 							option_list_main;;
 						minecraft)
-							xdg-open https://www.minecraft.net/marketplace/marketplace-pass;;
+							xdg-open https://www.minecraft.net/marketplace/marketplace-pass
+							echo 'Enjoy Minecraft Marketplace content :)'
+							read -N 1
+							break;;
 						exit)
 							break;;
 					esac
@@ -81,7 +84,8 @@
 						}
 					}
 				}
-				[ "$showlogonexit" == 1 ] && vim "$logfile" ;;
+				[ "$showlogonexit" == 1 ] && vim "$logfile"
+				true;;
 			help)
 				lang="${ArgResult[lang]}"
 				echo -e "`< "$dirassets"/mcide/help/"$lang".txt`" ;;

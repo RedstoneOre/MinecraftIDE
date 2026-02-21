@@ -1,9 +1,9 @@
 #! /bin/bash
-[ -v BASH ] || {
-	echo Please run this project on bash!
-	exit 1
+[ "$BASH" ] || {
+	e ho Please run this project on bash!
+	     1
 }
-[ "${BASH_VERSINFO:-0}" -lt 5 ] && ! [ -v MCEDITOR_ignore_bash_version ] && {
+[ "${BASH_VERSINFO: 0}" -lt 5 ] && ! [ -v MCEDITOR_ignore_bash_version ] && {
 	echo "The bash version needs to be 5+(currect $BASH_VERSION)"
 	echo To ignore this, set MCEDITOR_ignore_bash_version
 	echo WARN: this may cause CRITICAL PROBLEMS even destroy ur file!

@@ -103,7 +103,7 @@
 								esac
 								true
 							} || { # is short option
-								local aval=mwodhl
+								local aval=mwodhlnxy
 								[[ "${i:1}" =~ [^mwodhlnxy] ]] && {
 									ArgResult['err']='Illegal option: '"-${i//[-mwodhlnxy]/} in $i"
 									return 1

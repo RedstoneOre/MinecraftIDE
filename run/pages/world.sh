@@ -47,6 +47,7 @@
 		local worldname=$1
 		local createmode=${2:-load}
 		local worlddir="$dirgame/saves/$worldname"
+		local worldThreads=()
 		[ "$createmode" == create ] && [ "$worldname" == '' ] && {
 			createmode=simple
 		}
@@ -180,6 +181,7 @@
 		local printthreads=4 i=
 		for((i=0;i<printthreads;++i));do
 			PrintThread &
+			worldThreads[${#worldThreads[@]}]="$!"
 		done
 
 		local power=100 prignore=0 isdig=0 canceldrop=0 opsuc=0 invopen=0 linvopen=0 linvselected=
@@ -407,7 +409,9 @@
 		[ "$MCEDITOR_dbgl" -ge 1 ] && {
 			echo 'Waiting...'
 		}
-		wait
+		[ "${#worldThreads[@]}" -gt 0 ] && (( "${#worldThreads[@]}" > 0 )) && {
+			wait "${worldThreads[@]}"
+		}
 		echo -n $'\e[?25h'
 		[ "$createmode" == simple ] && {
 			editorpage=exit
