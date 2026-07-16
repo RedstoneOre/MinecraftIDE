@@ -33,5 +33,3 @@
 		\e[37m|\e[0m -o file:PATH
 	\e[1m对于`load_world`页面: \e[0m
 		-n world:WORLDNAME		打开的世界,我不知道为什么我添加了这个,毕竟他已经在-w <world>里了
-\e[1m示例:\e[0m
-	\e[2mComming Soon awa\e[0m

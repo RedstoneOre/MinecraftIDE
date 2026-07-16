@@ -23,7 +23,7 @@
 		--vision-size-y y:NUMBER	Set the vision height
 		\e[37m|\e[0m -y y:NUMBER
 	* If any dimnesion is defined in the arguments, the default page
-	*  will be setted to `create_world`, otherwise it will be setted
+	*  will be set to `create_world`, otherwise it will be set
 	*  to `menu`.
 	\e[1m For `menu` page: \e[0m
 	\e[1m For `create_world` page: \e[0m
@@ -34,5 +34,3 @@
 		\e[37m|\e[0m -o file:PATH
 	\e[1m For `load_world` page: \e[0m
 		-n world:WORLDNAME		The world to open, idk why I added this since it's already in -w <world>
-\e[1mSamples:\e[0m
-	\e[2mComming Soon awa\e[0m
